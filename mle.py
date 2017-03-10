@@ -24,10 +24,11 @@ with open('../madness/input/RegularSeasonCompactResults.csv') \
 
 initials_for_team = {}
 for team in teams:
-	initials_for_team[team] = (wins_for_team + EPSILON) / (losses_for_team + EPSILON)
+	initials_for_team[team] = float(wins_for_team[team]) / (wins_for_team[team] + losses_for_team[team])
 
-print initials
+for team in initials_for_team:
+	print team, initials_for_team[team]
 
 def win_likelihood(p1, p2):
-	return (p1 * (1 - p2)) /
-		(p1 * (1 - p2) + p2 * (1 - p1))
+	return (p1 * (1 - p2) /
+		(p1 * (1 - p2) + p2 * (1 - p1)))
