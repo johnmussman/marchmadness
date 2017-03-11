@@ -8,7 +8,7 @@ from math import sqrt
 
 EPSILON = .01
 # YEAR = sample([str(i) for i in range(1990, 2017)], 1)[0]
-YEAR = '2004'
+YEAR = '2015'
 PATIENCE = 1000
 
 def win_likelihood(p1, p2):
@@ -26,31 +26,31 @@ def win_likelihood(p1, p2):
 # 			team_geo[team] = (float(lt), float(lg))
 # 	return team_geo
 
-# # def load_tourney_geo():
-# # 	tourney_geo = {}
-# # 	with open('../madness/input/TourneyGeog.csv', 'r') \
-# # 			as fp:
-# # 		next(fp)
-# # 		for line in fp:
-# # 			line = line.strip()
-# # 			year, day, wteam, lteam, slot, host, lat, lng = line.split(',')
-# # 			tourney_geo[(year, day, wteam, lteam)] = (float(lat), float(lng))
-# # 	return tourney_geo
+# def load_tourney_geo():
+# 	tourney_geo = {}
+# 	with open('../madness/input/TourneyGeog.csv', 'r') \
+# 			as fp:
+# 		next(fp)
+# 		for line in fp:
+# 			line = line.strip()
+# 			year, day, wteam, lteam, slot, host, lat, lng = line.split(',')
+# 			tourney_geo[(year, day, wteam, lteam)] = (float(lat), float(lng))
+# 	return tourney_geo
 
-# # def assess_homecourt(wcoords, lcoords, tcoords):
-# # 	wdist = sqrt((wcoords[0] - tcoords[0])**2 + (wcoords[1] - tcoords[1])**2)
-# # 	ldist = sqrt((lcoords[0] - tcoords[0])**2 + (lcoords[1] - tcoords[1])**2)
-# # 	return (wdist - ldist) / (wdist + ldist)
+# def assess_homecourt(wcoords, lcoords, tcoords):
+# 	wdist = sqrt((wcoords[0] - tcoords[0])**2 + (wcoords[1] - tcoords[1])**2)
+# 	ldist = sqrt((lcoords[0] - tcoords[0])**2 + (lcoords[1] - tcoords[1])**2)
+# 	return (wdist - ldist) / (wdist + ldist)
 
-# # def assess_homecourt_lat(wcoords, lcoords, tcoords):
-# # 	wdist = sqrt((wcoords[0] - tcoords[0])**2)
-# # 	ldist = sqrt((lcoords[0] - tcoords[0])**2)
-# # 	return (wdist - ldist) / (wdist + ldist)
+# def assess_homecourt_lat(wcoords, lcoords, tcoords):
+# 	wdist = sqrt((wcoords[0] - tcoords[0])**2)
+# 	ldist = sqrt((lcoords[0] - tcoords[0])**2)
+# 	return (wdist - ldist) / (wdist + ldist)
 
-# # def assess_homecourt_lng(wcoords, lcoords, tcoords):
-# # 	wdist = sqrt((wcoords[1] - tcoords[1])**2)
-# # 	ldist = sqrt((lcoords[1] - tcoords[1])**2)
-# # 	return (wdist - ldist) / (wdist + ldist)
+# def assess_homecourt_lng(wcoords, lcoords, tcoords):
+# 	wdist = sqrt((wcoords[1] - tcoords[1])**2)
+# 	ldist = sqrt((lcoords[1] - tcoords[1])**2)
+# 	return (wdist - ldist) / (wdist + ldist)
 
 # various_ratings = []
 # TEST = 10
@@ -136,10 +136,11 @@ predicted = []
 for year, day, wteam, lteam in tourney_outcomes:
 			# lat_margin = assess_homecourt_lat(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gi
 			# lng_margin = assess_homecourt_lng(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gj
-			#  + lat_margin * gi + lng_margin * gj
+			 # + lat_margin * gi + lng_margin * gj
 	predicted.append(win_likelihood(ratings[wteam], ratings[lteam]))
 curr_ll = logloss(actual, predicted)
-print YEAR, gi, gj, 'score: ', curr_ll
+#  gi, gj,
+print YEAR, 'score: ', curr_ll
 
 # 	various_ratings.append(ratings)
 
