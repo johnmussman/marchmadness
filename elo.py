@@ -1,11 +1,10 @@
 import math
 
 ######################################
-# sequential ELO rankings suffer from poor data capture
-# they do not capture full-season effects and converge slowly
-# they impose narrative arcs unnecessarily
-# I want a regular-season metric to apply to playoffs
+# implementation of simple ELO scheme
 ######################################
+
+YEAR = 2004
 
 # ((team_a, score_a), (team_b, score_b))
 games = []
@@ -14,7 +13,7 @@ with open('../kaggle/madness/input/RegularSeasonCompactResults.csv') \
 	next(fp)
 	for line in fp:
 		year, day, wteam, wscore, lteam, lscore, wloc, numot = line.strip().split(',')
-		if year == '2004':
+		if year == YEAR:
 			games.append(((wteam, int(wscore)), (lteam, int(lscore))))
 
 
