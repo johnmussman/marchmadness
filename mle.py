@@ -8,7 +8,7 @@ from math import sqrt
 
 EPSILON = .01
 # YEAR = sample([str(i) for i in range(1990, 2017)], 1)[0]
-YEAR = '2015'
+YEAR = '2017'
 PATIENCE = 1000
 
 def win_likelihood(p1, p2):
@@ -68,7 +68,7 @@ wins_for_team = defaultdict(int)
 losses_for_team = defaultdict(int)
 teams = set()
 
-with open('../madness/input/RegularSeasonCompactResults.csv') \
+with open('../madness/input/competition/RegularSeasonCompactResults.csv') \
 		as fp:
 	next(fp)
 	for line in fp:
@@ -84,15 +84,14 @@ with open('../madness/input/RegularSeasonCompactResults.csv') \
 			game_indices_by_team[lteam].add(this_game)
 			wins_for_team[wteam] += 1
 			losses_for_team[lteam] += 1
-
-tourney_outcomes = []
-with open('../madness/input/TourneyCompactResults.csv') \
-		as fp:
-	next(fp)
-	for line in fp:
-		year, day, wteam, wscore, lteam, lscore, wloc, numot = line.strip().split(',')
-		if year == YEAR:
-			tourney_outcomes.append((year, day, wteam, lteam))
+# tourney_outcomes = []
+# with open('../madness/input/competition/TourneyCompactResults.csv') \
+# 		as fp:
+# 	next(fp)
+# 	for line in fp:
+# 		year, day, wteam, wscore, lteam, lscore, wloc, numot = line.strip().split(',')
+# 		if year == YEAR:
+# 			tourney_outcomes.append((year, day, wteam, lteam))
 
 ratings = {}
 for team in game_indices_by_team:
@@ -123,7 +122,18 @@ while convergence < PATIENCE:
 		for game_idx in game_indices_by_team[team]:
 			prediction[game_idx] = provisional_prediction[game_idx]
 		convergence = 0
-print time.time() - start, " seconds to converge."
+print time.time() - start, "seconds to converge."
+print best_ll, "is the season score."
+
+with open('../madness/input/competition/SampleSubmission.csv') as sample:
+	with open('../madness/output/mle_season_fit.csv', 'w') as sb_file:
+		next(sample)
+		sb_file.write('id,pred\n')
+		for line in sample:
+			year, team1, team2 = line.strip().split(',')[0].split('_')
+			sb_file.write(YEAR + '_' + team1 + '_' + team2 + ',')
+			sb_file.write(str(win_likelihood(ratings[team1], ratings[team2])) + '\n')
+print "Done."
 
 # team_geo = load_team_geo()
 # tourney_geo = load_tourney_geo()
@@ -131,16 +141,17 @@ print time.time() - start, " seconds to converge."
 # 	for j in range(10):
 # 		gi = float(i) / 1000
 # 		gj = float(j) / 1000
-actual = [1] * len(tourney_outcomes)
-predicted = []
-for year, day, wteam, lteam in tourney_outcomes:
-			# lat_margin = assess_homecourt_lat(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gi
-			# lng_margin = assess_homecourt_lng(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gj
-			 # + lat_margin * gi + lng_margin * gj
-	predicted.append(win_likelihood(ratings[wteam], ratings[lteam]))
-curr_ll = logloss(actual, predicted)
-#  gi, gj,
-print YEAR, 'score: ', curr_ll
+# actual = [1] * len(tourney_outcomes)
+# predicted = []
+# for year, day, wteam, lteam in tourney_outcomes:
+# 			# lat_margin = assess_homecourt_lat(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gi
+# 			# lng_margin = assess_homecourt_lng(team_geo[wteam], team_geo[lteam], tourney_geo[(year, day, wteam, lteam)]) * gj
+# 			 # + lat_margin * gi + lng_margin * gj
+# 	predicted.append(win_likelihood(ratings[wteam], ratings[lteam]))
+# curr_ll = logloss(actual, predicted)
+# #  gi, gj,
+# print YEAR, 'score: ', curr_ll
+
 
 # 	various_ratings.append(ratings)
 
